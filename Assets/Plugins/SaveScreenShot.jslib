@@ -1,29 +1,24 @@
 mergeInto(LibraryManager.library, {
-  SaveScreenShotJS: function (base64Tex) {
-    const image = Pointer_stringify(base64Tex);
-
-    var bin = atob(image.replace(/^.*,/, ''));
-    var buffer = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) {
-      buffer[i] = bin.charCodeAt(i);
+  SaveScreenShotJS: function (base64Ptr) {
+    const imageDataUrl = UTF8ToString(base64Ptr);
+    const base64 = imageDataUrl.split(',')[1];
+    const binaryString = atob(base64);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
     }
 
-    try{
-      var blob = new Blob([buffer.buffer], {
-        type: 'image/png'
-      });
-    }catch (e){
-      return;
+    try {
+      const blob = new Blob([bytes.buffer], { type: 'image/png' });
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.download = "ScreenShot.png";
+      a.href = objectUrl;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+    } catch (e) {
+      console.error("SaveScreenShotJS error:", e);
     }
-
-    var url = (window.URL);
-    var dataUrl = url.createObjectURL(blob);
-
-    var a = document.createElement('a');
-    a.download = "ScreenShot.png";
-    a.href = dataUrl;
-
-    a.click();
-
   },
 });
