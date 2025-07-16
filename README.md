@@ -1,6 +1,6 @@
 # Unity WebGL ScreenShot
 
-**Demo**: https://unity-webgl-screenshot.pages.dev/
+**Demo**: https://unity-webgl-screenshot.hashory.app/
 
 ## Info
 
